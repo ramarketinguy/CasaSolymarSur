@@ -100,6 +100,50 @@
             position: relative;
         }
 
+        /* Gallery Grid */
+        .gallery-grid {
+            column-count: 1;
+            column-gap: 1.5rem;
+        }
+
+        @media (min-width: 768px) {
+            .gallery-grid {
+                column-count: 2;
+            }
+        }
+
+        @media (min-width: 1024px) {
+            .gallery-grid {
+                column-count: 3;
+            }
+        }
+
+        .gallery-item {
+            break-inside: avoid;
+            margin-bottom: 1.5rem;
+            border-radius: 1.5rem;
+            overflow: hidden;
+            position: relative;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            transition: all 0.5s ease;
+        }
+
+        .gallery-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: auto;
+            display: block;
+            transition: transform 0.7s ease;
+        }
+
+        .gallery-item:hover img {
+            transform: scale(1.05);
+        }
+
         /* Animation Utility */
         .will-animate {
             opacity: 0;
@@ -160,7 +204,9 @@
             </div>
             <div class="hidden md:flex space-x-12 font-medium text-[11px] uppercase tracking-[0.25em] text-gray-800">
                 <a href="#hero" class="hover:text-emerald-700 transition-colors">Inicio</a>
+                <a href="#dream" class="hover:text-emerald-700 transition-colors">Video</a>
                 <a href="#space" class="hover:text-emerald-700 transition-colors">Distribución</a>
+                <a href="#gallery" class="hover:text-emerald-700 transition-colors">Galería</a>
                 <a href="#financial" class="hover:text-emerald-700 transition-colors">Inversión</a>
             </div>
             <div class="flex items-center gap-4">
@@ -198,18 +244,17 @@
 
             <div class="hero-reveal flex flex-col md:flex-row gap-6 justify-center items-center w-full"
                 style="animation-delay: 0.8s">
-                <a href="https://youtube.com/shorts/L6NJhobA2mA?si=4vruulGCNJVR8HuS" target="_blank"
+                <a href="#dream"
                     class="w-full md:w-auto btn-video px-10 py-5 rounded-2xl text-[12px] font-bold flex items-center justify-center uppercase tracking-widest group">
                     <div
                         class="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center mr-4 group-hover:bg-white/40 transition-colors">
                         <i class="fa-solid fa-play text-white pulse-icon"></i>
                     </div>
-                    Recorrido en Video
+                    Ver Video
                 </a>
-                <a href="https://casa.mercadolibre.com.uy/MLU-980181484-casa-en-venta-en-solymar-sur-padron-unico-760mts2-3-dormitorios-2-banos-garage-cochera-parrillero-y-patio-a-400-mts-rambla-_JM"
-                    target="_blank"
+                <a href="#gallery"
                     class="w-full md:w-auto btn-luxury px-12 py-5 rounded-2xl text-[12px] font-bold flex items-center justify-center uppercase tracking-widest shadow-2xl">
-                    <i class="fa-solid fa-camera mr-3"></i> Galería de Fotos
+                    <i class="fa-solid fa-camera mr-3"></i> Galería
                 </a>
                 <a href="https://walink.co/s8b9sv" target="_blank"
                     class="w-full md:w-auto luxury-glass text-white px-10 py-5 rounded-2xl text-[12px] font-bold hover:bg-white hover:text-black transition-all flex items-center justify-center uppercase tracking-widest">
@@ -217,7 +262,6 @@
                 </a>
             </div>
 
-            <!-- Arrow integrated into flow with spacing -->
             <div class="mt-20 animate-bounce opacity-70">
                 <i class="fa-solid fa-chevron-down text-white text-3xl"></i>
             </div>
@@ -225,36 +269,76 @@
     </header>
 
     <main>
+        <!-- NEW: Emotional Video Section -->
+        <section id="dream" class="py-24 bg-emerald-950 relative overflow-hidden">
+            <div class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-5">
+            </div>
+            <div class="max-w-4xl mx-auto px-6 text-center relative z-10 will-animate">
+                <span class="text-white/60 font-bold tracking-[0.4em] uppercase text-[10px] mb-8 block">Experiencia
+                    Visual</span>
+                <h2 class="text-4xl md:text-6xl font-bold text-white mb-8">El hogar de tu familia.</h2>
+                <p class="text-emerald-100/80 text-lg font-light mb-12 max-w-2xl mx-auto">
+                    Imagina los domingos en el jardín, el silencio de la noche y la seguridad de un espacio pensado para
+                    crear recuerdos eternos.
+                </p>
+
+                <div
+                    class="relative w-full max-w-sm mx-auto aspect-[9/16] rounded-3xl overflow-hidden shadow-2xl border border-white/10 group">
+                    <!-- Overlay / Cover -->
+                    <div id="videoOverlay"
+                        class="absolute inset-0 bg-black/40 flex flex-col items-center justify-center z-20 transition-all duration-500 cursor-pointer"
+                        onclick="playVideo()">
+                        <div
+                            class="w-20 h-20 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                            <i class="fa-solid fa-play text-white text-3xl pl-1"></i>
+                        </div>
+                        <span class="text-white text-xs font-bold uppercase tracking-widest">Comenzar Experiencia</span>
+                    </div>
+
+                    <!-- Sound Control -->
+                    <button id="soundToggle" onclick="toggleSound()"
+                        class="absolute top-4 right-4 z-30 w-10 h-10 bg-black/50 backdrop-blur-md rounded-full text-white flex items-center justify-center opacity-0 transition-opacity pointer-events-none">
+                        <i id="soundIcon" class="fa-solid fa-volume-xmark"></i>
+                    </button>
+
+                    <!-- YouTube Iframe -->
+                    <div id="player" class="absolute inset-0 w-full h-full"></div>
+                </div>
+            </div>
+        </section>
+
         <!-- Distribution Section -->
         <section id="space" class="py-20 lg:py-32 bg-white overflow-hidden">
             <div
                 class="max-w-7xl mx-auto px-4 md:px-6 grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-24 items-start lg:items-center">
                 <div class="relative order-2 lg:order-1 will-animate w-full">
                     <div
-                        class="hidden lg:block absolute -top-10 -left-10 w-40 h-40 bg-emerald-50 rounded-full -z-10 animate-pulse">
-                    </div>
-                    <div
-                        class="bg-gray-50 p-6 md:p-12 rounded-[4rem] border border-gray-100 shadow-sm relative z-10 w-full">
+                        class="bg-gray-50 p-6 md:p-8 rounded-[3rem] border border-gray-100 shadow-sm relative z-10 w-full">
                         <h3
-                            class="text-xl md:text-2xl font-bold text-emerald-900 mb-10 font-serif text-center uppercase tracking-widest">
+                            class="text-xl md:text-2xl font-bold text-emerald-900 mb-8 font-serif text-center uppercase tracking-widest">
                             Equilibrio de Terreno</h3>
-                        <div class="chart-container">
-                            <canvas id="landChart"></canvas>
+
+                        <!-- Garden Image Integration -->
+                        <div class="relative h-64 w-full rounded-3xl overflow-hidden mb-8 shadow-inner">
+                            <img src="https://lh3.googleusercontent.com/d/1y0UZMYO8by9KVUhVplQFXRLT0eEtpYu1"
+                                alt="Jardín y Fondo"
+                                class="w-full h-full object-cover transform hover:scale-105 transition-transform duration-700">
+                            <div
+                                class="absolute inset-0 bg-gradient-to-t from-emerald-900/80 to-transparent flex items-end p-6">
+                                <p class="text-white font-bold text-lg">556m² de Naturaleza Privada</p>
+                            </div>
                         </div>
-                        <div class="grid grid-cols-2 gap-8 mt-12">
-                            <div class="group text-center">
-                                <span
-                                    class="block text-3xl md:text-4xl font-bold text-emerald-900 transition-all group-hover:translate-x-2">204m²</span>
-                                <div class="w-12 h-1 bg-emerald-600 my-3 mx-auto lg:mx-0"></div>
-                                <p class="text-[10px] uppercase font-black text-gray-400 tracking-widest">Área Edificada
+
+                        <div class="grid grid-cols-2 gap-4">
+                            <div class="group text-center bg-white p-4 rounded-2xl shadow-sm border border-gray-100">
+                                <span class="block text-2xl font-bold text-emerald-900">204m²</span>
+                                <p class="text-[9px] uppercase font-black text-gray-400 tracking-widest mt-1">Edificados
                                 </p>
                             </div>
-                            <div class="group text-center">
-                                <span
-                                    class="block text-3xl md:text-4xl font-bold text-emerald-900 transition-all group-hover:translate-x-2">556m²</span>
-                                <div class="w-12 h-1 bg-emerald-300 my-3 mx-auto lg:mx-0"></div>
-                                <p class="text-[10px] uppercase font-black text-gray-400 tracking-widest">Fondo Libre
-                                </p>
+                            <div class="group text-center bg-emerald-900 p-4 rounded-2xl shadow-sm text-white">
+                                <span class="block text-2xl font-bold">556m²</span>
+                                <p class="text-[9px] uppercase font-black text-emerald-200 tracking-widest mt-1">Fondo
+                                    Libre</p>
                             </div>
                         </div>
                     </div>
@@ -268,9 +352,10 @@
                         class="text-3xl md:text-6xl font-bold text-gray-900 mb-10 leading-tight will-animate break-words">
                         Privacidad total. <br><span class="italic font-normal text-emerald-800">Padrón único de
                             760m².</span></h2>
+                    <!-- Fixed Text Formatting -->
                     <p
                         class="text-base md:text-lg text-gray-600 mb-12 leading-relaxed lg:text-justify will-animate px-2 md:px-0">
-                        No es solo una casa, es un refugio privado. Ubicada en el codiciado entorno de **El Bosque**,
+                        No es solo una casa, es un refugio privado. Ubicada en el codiciado entorno de <b>El Bosque</b>,
                         esta propiedad ofrece un terreno excepcionalmente amplio, totalmente cercado, que garantiza la
                         seguridad y tranquilidad absoluta que su familia exige.
                     </p>
@@ -290,29 +375,28 @@
             </div>
         </section>
 
-        <!-- Features Section -->
-        <section id="details" class="py-32 bg-gray-50">
+        <!-- Gallery Section (Replaces Attributes) -->
+        <section id="gallery" class="py-32 bg-gray-50">
             <div class="max-w-7xl mx-auto px-6">
-                <div class="text-center mb-20 will-animate">
-                    <h2 class="text-3xl md:text-5xl font-bold text-emerald-900 mb-6 uppercase tracking-tight">Atributos
-                    </h2>
+                <div class="text-center mb-16 will-animate">
+                    <h2 class="text-3xl md:text-5xl font-bold text-emerald-900 mb-6 uppercase tracking-tight">Galería
+                        Visual</h2>
                     <div class="w-24 h-1 bg-emerald-600 mx-auto mb-6"></div>
-                    <p class="text-lg text-gray-500 font-light max-w-2xl mx-auto">Excelencia constructiva y espacios
-                        diseñados para una vida de confort superior.</p>
+                    <p class="text-lg text-gray-500 font-light max-w-2xl mx-auto">Recorre cada rincón de tu próximo
+                        hogar.</p>
                 </div>
 
-                <div class="flex justify-center mb-16 will-animate">
+                <div class="flex justify-center mb-12 will-animate">
                     <div class="p-1 bg-white rounded-3xl shadow-sm border border-gray-100 flex gap-2">
                         <button onclick="switchTab('interior')" id="tab-interior"
-                            class="tab-active bg-emerald-900 text-white px-10 py-5 rounded-2xl font-bold text-[10px] uppercase tracking-[0.2em] shadow-lg scale-105">Interiores</button>
+                            class="tab-active bg-emerald-900 text-white px-8 py-4 md:px-10 md:py-5 rounded-2xl font-bold text-[10px] uppercase tracking-[0.2em] shadow-lg scale-105 transition-all">Interiores</button>
                         <button onclick="switchTab('exterior')" id="tab-exterior"
-                            class="px-10 py-5 rounded-2xl font-bold text-[10px] uppercase tracking-[0.2em] text-gray-400 transition-all hover:text-emerald-900">Exteriores</button>
+                            class="px-8 py-4 md:px-10 md:py-5 rounded-2xl font-bold text-[10px] uppercase tracking-[0.2em] text-gray-400 transition-all hover:text-emerald-900">Exteriores</button>
                     </div>
                 </div>
 
-                <div id="feature-container"
-                    class="grid md:grid-cols-3 gap-10 opacity-0 transition-all duration-500 will-animate">
-                    <!-- Dynamic Loading -->
+                <div id="gallery-container" class="opacity-0 transition-opacity duration-500 min-h-[400px]">
+                    <!-- Images Injected Here -->
                 </div>
             </div>
         </section>
@@ -324,7 +408,8 @@
                     <span class="text-emerald-700 font-bold tracking-[0.3em] uppercase text-xs mb-6 block">Inversión
                         Inteligente</span>
                     <h2 class="text-3xl md:text-5xl font-bold text-gray-900 mb-8 leading-tight">Proyecta tu futuro con
-                        <br><span class="italic font-normal">claridad financiera.</span></h2>
+                        <br><span class="italic font-normal">claridad financiera.</span>
+                    </h2>
                     <p class="text-lg text-gray-600 mb-10 leading-relaxed lg:text-justify">
                         Propiedad con documentación al día, totalmente apta para préstamo hipotecario. Ponemos a tu
                         disposición una herramienta para estimar tu inversión hoy mismo.
@@ -350,7 +435,7 @@
                 <div
                     class="bg-emerald-900 rounded-[4rem] p-12 text-white shadow-3xl relative overflow-hidden will-animate">
                     <div class="absolute -top-20 -right-20 w-60 h-60 bg-white/5 rounded-full"></div>
-
+                    <!-- Calculator Content (Same as previous) -->
                     <div class="relative z-10">
                         <h3 class="text-xl font-bold mb-10 uppercase tracking-widest text-emerald-300">Simulador de
                             Crédito</h3>
@@ -433,83 +518,108 @@
         </footer>
     </div>
 
+    <!-- YouTube API -->
+    <script src="https://www.youtube.com/iframe_api"></script>
     <script>
         const PROPERTY_PRICE = 315000;
         let selectedYears = 20;
 
-        const features = {
+        // --- Gallery Images (IDs extracted from user provided links) ---
+        const galleryImages = {
             interior: [
-                { title: "Área Social", icon: "fa-couch", desc: "Living-comedor de imponente presencia con <strong>estufa a leña</strong> premium de alto rendimiento." },
-                { title: "Dormitorios", icon: "fa-bed", desc: "Tres unidades de descanso con techos altos, solidez constructiva y excelente luz natural." },
-                { title: "Zonas Húmedas", icon: "fa-utensils", desc: "Cocina definida con desayunador y dos baños completos de diseño moderno recientemente reciclados." }
+                '1qhm2jcVYipGLXS1QnV_G-B7YvgRVDAj8', '1h9CIsaOpyIgwkXmFkwqvFygt_gKg8vA1',
+                '1Wtw6squ04Wc3PlrC1g92PFPd0XIxlaGn', '1S_ipGRaH3BiLwwquKkKxlaNfJ7rp-N61',
+                '1WvFopCz_GDGy-l89wIGKbvDwv0byDu_Z', '1wWBH5M687EWuPseDCCmBrWtai0m1v82O',
+                '1xqQNanlG7KVvGAJ4xWLualW9uZEPDXDI', '19afTufIcLxwTDLDl5cWJiMssiy1e6o6C',
+                '1fcDWr2u1n2PZX_2Gf1XizZ9YR509uaKY', '1oGB-yHSKVBjsPL4TAiVEYTaJsB5pfPRQ',
+                '1GmcDwAcfcRrzBkMvNZCJUEl-0hsAxbAC', '1hoDQ7rA3F7TokPgikFqhQO_vdgIc44_A',
+                '1hJJ47Vm-FWSNL8l_-s3HPr8d4O8W4Vbj'
             ],
             exterior: [
-                { title: "Logística", icon: "fa-car", desc: "Garage cerrado para resguardo privado y cochera techada para flota adicional." },
-                { title: "Barbacoa", icon: "fa-fire", desc: "Espacio gourmet techado con parrillero profesional y horno de barro rústico para reuniones." },
-                { title: "Privacidad", icon: "fa-tree", desc: "Parque privado totalmente cercado en 760m² de padrón único impecable." }
+                '1QfcjX48cMJzumiSF2ZYkIU2jmwkJGpjb', '1l0Ae0dsIcR5Pbxk-r172UjNQTRjUAIHO',
+                '1lcvoVaWLEYzht4CC5Zfzd2IbhMUoBQmm', '1y0UZMYO8by9KVUhVplQFXRLT0eEtpYu1',
+                '1BGHobtpbg6xxG66Fl8_FfbYpUrEvUDDp'
             ]
         };
 
         function switchTab(cat) {
-            const container = document.getElementById('feature-container');
+            const container = document.getElementById('gallery-container');
+            const btns = {
+                interior: document.getElementById('tab-interior'),
+                exterior: document.getElementById('tab-exterior')
+            };
+
+            // Transition
             container.style.opacity = '0';
-            ['interior', 'exterior'].forEach(id => {
-                const btn = document.getElementById('tab-' + id);
-                if (btn) {
-                    btn.className = id === cat ? 'tab-active bg-emerald-900 text-white px-10 py-5 rounded-2xl font-bold text-[10px] uppercase tracking-[0.2em] shadow-lg scale-105' : 'px-10 py-5 rounded-2xl font-bold text-[10px] uppercase tracking-[0.2em] text-gray-400 hover:text-emerald-900 transition-all';
-                }
-            });
+
+            // Button Styles
+            if (cat === 'interior') {
+                btns.interior.className = "tab-active bg-emerald-900 text-white px-8 py-4 md:px-10 md:py-5 rounded-2xl font-bold text-[10px] uppercase tracking-[0.2em] shadow-lg scale-105 transition-all";
+                btns.exterior.className = "px-8 py-4 md:px-10 md:py-5 rounded-2xl font-bold text-[10px] uppercase tracking-[0.2em] text-gray-400 transition-all hover:text-emerald-900";
+            } else {
+                btns.exterior.className = "tab-active bg-emerald-900 text-white px-8 py-4 md:px-10 md:py-5 rounded-2xl font-bold text-[10px] uppercase tracking-[0.2em] shadow-lg scale-105 transition-all";
+                btns.interior.className = "px-8 py-4 md:px-10 md:py-5 rounded-2xl font-bold text-[10px] uppercase tracking-[0.2em] text-gray-400 transition-all hover:text-emerald-900";
+            }
+
             setTimeout(() => {
-                container.innerHTML = features[cat].map(f => `
-                    <div class="bg-white p-12 rounded-[3.5rem] shadow-sm hover:shadow-2xl transition-all duration-500 group border border-gray-50">
-                        <div class="w-16 h-16 bg-emerald-50 rounded-3xl flex items-center justify-center text-emerald-900 text-2xl mb-8 group-hover:bg-emerald-900 group-hover:text-white transition-colors duration-500">
-                            <i class="fa-solid ${f.icon}"></i>
-                        </div>
-                        <h4 class="text-xl font-bold text-gray-900 mb-4 uppercase tracking-tight">${f.title}</h4>
-                        <p class="text-gray-500 text-sm leading-relaxed">${f.desc}</p>
+                const images = galleryImages[cat];
+                const html = `
+                    <div class="gallery-grid">
+                        ${images.map(id => `
+                            <div class="gallery-item">
+                                <img src="https://lh3.googleusercontent.com/d/${id}" alt="Foto ${cat}" loading="lazy">
+                            </div>
+                        `).join('')}
                     </div>
-                `).join('');
+                `;
+                container.innerHTML = html;
                 container.style.opacity = '1';
             }, 300);
         }
 
-        function initCharts() {
-            const ctx = document.getElementById('landChart').getContext('2d');
-            new Chart(ctx, {
-                type: 'doughnut',
-                data: {
-                    labels: ['Edificado', 'Jardín'],
-                    datasets: [{
-                        data: [204, 556],
-                        backgroundColor: ['#064E3B', '#A7F3D0'],
-                        borderWidth: 0,
-                        hoverOffset: 25
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: {
-                            position: 'bottom',
-                            labels: {
-                                padding: 30,
-                                font: { family: 'Montserrat', size: 10, weight: '600' }
-                            }
-                        }
-                    },
-                    cutout: '82%'
-                }
-            });
+        // --- Video Logic (Native Embed Fix) ---
+        function playVideo() {
+            const container = document.getElementById('player');
+            // Standard generic embed to ensure compatibility
+            container.innerHTML = `
+                <div class="relative w-full h-full bg-black flex flex-col items-center justify-center text-white" 
+                     style="background-image: url('https://img.youtube.com/vi/S8Rsc-Lj9Y0/maxresdefault.jpg'); background-size: cover; background-position: center;">
+                    <div class="absolute inset-0 bg-black/50"></div>
+                    <div class="relative z-10 flex flex-col items-center p-6 text-center animate__animated animate__fadeIn">
+                        <a href="https://www.youtube.com/watch?v=S8Rsc-Lj9Y0" target="_blank" class="group flex flex-col items-center gap-4 hover:opacity-90 transition-all">
+                            <div class="w-20 h-20 rounded-full border-2 border-white/80 bg-white/10 backdrop-blur-md flex items-center justify-center group-hover:scale-110 group-hover:bg-white/20 transition-all duration-300 shadow-lg">
+                                <i class="fa-solid fa-play text-3xl ml-1 text-white"></i>
+                            </div>
+                            <div class="space-y-1">
+                                <h3 class="text-2xl font-serif">Ver en YouTube</h3>
+                                <p class="text-sm font-light opacity-90">La reproducción integrada no está disponible offline</p>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            `;
+
+            // UI Transitions
+            const overlay = document.getElementById('videoOverlay');
+            if (overlay) {
+                overlay.style.opacity = '0';
+                setTimeout(() => { overlay.style.display = 'none'; }, 500);
+            }
+
+            // Hide custom sound toggle
+            const soundToggle = document.getElementById('soundToggle');
+            if (soundToggle) soundToggle.style.display = 'none';
         }
 
+        // Feature disabled for stability
+        function toggleSound() { }
+
+        // --- Calculator ---
         function setYears(yr) {
             selectedYears = yr;
             [15, 20, 25].forEach(y => {
                 const btn = document.getElementById('yr-' + y);
-                if (btn) {
-                    btn.className = y === yr ? 'bg-white text-emerald-900 py-4 rounded-2xl text-[11px] font-bold uppercase shadow-xl scale-105' : 'py-4 rounded-2xl border border-white/20 text-[11px] font-bold uppercase transition-all hover:bg-white/5';
-                }
+                if (btn) btn.className = y === yr ? 'bg-white text-emerald-900 py-4 rounded-2xl text-[11px] font-bold uppercase shadow-xl scale-105' : 'py-4 rounded-2xl border border-white/20 text-[11px] font-bold uppercase transition-all hover:bg-white/5';
             });
             updateCalc();
         }
@@ -518,7 +628,6 @@
             const slider = document.getElementById('rangeIn');
             let down = parseInt(slider.value);
             document.getElementById('displayIn').innerText = down.toLocaleString();
-
             const loan = PROPERTY_PRICE - down;
             const rate = 0.048 / 12;
             const n = selectedYears * 12;
@@ -526,12 +635,10 @@
             if (loan > 0) pay = (loan * rate * Math.pow(1 + rate, n)) / (Math.pow(1 + rate, n) - 1);
             document.getElementById('monthlyPayment').innerText = `U$S ${Math.round(pay).toLocaleString()}`;
         }
-
         document.getElementById('rangeIn').addEventListener('input', updateCalc);
 
-        // Scroll Animation Logic
+        // --- Scroll Reveal ---
         window.addEventListener('scroll', reveal);
-
         function reveal() {
             var reveals = document.querySelectorAll('.will-animate');
             for (var i = 0; i < reveals.length; i++) {
@@ -545,10 +652,9 @@
         }
 
         window.onload = () => {
-            initCharts();
             switchTab('interior');
             updateCalc();
-            reveal(); // Initial check
+            reveal();
         };
     </script>
 </body>

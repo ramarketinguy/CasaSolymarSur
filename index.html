@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Residencia El Bosque | Rafa Osorio</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -15,195 +15,227 @@
             --accent-emerald: #10B981;
             --soft-white: #F9FAFB;
         }
-        body {
+        
+        /* Prevención de desbordamiento lateral */
+        html, body {
+            overflow-x: hidden;
+            width: 100%;
+            position: relative;
             font-family: 'Montserrat', sans-serif;
             background-color: var(--soft-white);
             color: #111827;
-            scroll-behavior: smooth;
+            margin: 0;
+            padding: 0;
         }
+
         h1, h2, h3, .font-serif {
             font-family: 'Playfair Display', serif;
         }
+
+        /* Hero flexible para evitar superposiciones */
         .hero-section {
-            background-image: linear-gradient(to bottom, rgba(0,0,0,0.3), rgba(0,0,0,0.7)), url('D_NQ_NP_639452-MLU97002617758_112025-F-null.webp');
+            background-image: linear-gradient(to bottom, rgba(0,0,0,0.5), rgba(0,0,0,0.8)), url('D_NQ_NP_639452-MLU97002617758_112025-F-null.webp');
             background-size: cover;
             background-position: center;
-            background-attachment: fixed;
+            background-attachment: scroll;
         }
+        @media (min-width: 1024px) {
+            .hero-section { background-attachment: fixed; }
+        }
+
         .glass-nav {
-            background: rgba(255, 255, 255, 0.92);
-            backdrop-filter: blur(10px);
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(15px);
         }
-        input[type=range] {
-            accent-color: var(--accent-emerald);
-            cursor: pointer;
+
+        /* Contenedor de gráficos optimizado */
+        .chart-container { 
+            position: relative; 
+            width: 100%; 
+            height: 260px; 
+            margin-bottom: 20px;
+        } 
+        @media (min-width: 768px) {
+            .chart-container { height: 320px; }
         }
+
         .btn-persuasive {
             background: linear-gradient(135deg, #059669 0%, #064E3B 100%);
             transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
-        .btn-persuasive:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 15px 30px rgba(6, 78, 59, 0.25);
-        }
+
         .tab-active {
             background-color: var(--primary-green);
             color: white;
         }
+
         .card-style {
             transition: all 0.3s ease;
-            border: 1px solid rgba(16, 185, 129, 0.1);
+            border: 1px solid rgba(16, 185, 129, 0.15);
         }
-        .card-style:hover {
-            border-color: var(--accent-emerald);
-            transform: translateY(-4px);
+
+        /* Evita que el menú fijo tape el contenido al navegar */
+        section {
+            scroll-margin-top: 90px;
         }
-        /* Estilo para el mapa y evitar que asteriscos de markdown se filtren */
-        .no-select { user-select: none; }
+
+        /* Ocultar scrollbar de la navegación de pestañas en móvil */
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
     </style>
 </head>
 <body class="antialiased">
 
     <!-- Navigation -->
-    <nav class="fixed top-0 w-full z-50 glass-nav border-b border-emerald-100 shadow-sm">
-        <div class="max-w-7xl mx-auto px-4 h-20 flex justify-between items-center">
+    <nav class="fixed top-0 w-full z-[100] glass-nav border-b border-emerald-100 shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 h-16 md:h-20 flex justify-between items-center">
             <div class="flex items-center">
-                <!-- Se elimina el span de texto duplicado, se deja el nombre/logo limpio -->
-                <img src="Logo.png" alt="Rafa Osorio" class="h-12 w-auto object-contain bg-transparent" onerror="this.src='https://placehold.co/180x60/ffffff/064e3b?text=Rafa+Osorio'">
+                <img src="Logo.png" alt="Rafa Osorio" class="h-8 md:h-12 w-auto max-w-[150px] object-contain" onerror="this.src='https://placehold.co/180x60/ffffff/064e3b?text=Rafa+Osorio'">
             </div>
-            <div class="hidden md:flex space-x-10 font-bold text-[10px] uppercase tracking-[0.2em] text-emerald-900">
+            <div class="hidden md:flex space-x-8 font-bold text-[10px] uppercase tracking-[0.2em] text-emerald-900">
                 <a href="#hero" class="hover:text-emerald-500 transition-colors">Inicio</a>
                 <a href="#space" class="hover:text-emerald-500 transition-colors">Distribución</a>
-                <a href="#details" class="hover:text-emerald-500 transition-colors">La Casa</a>
                 <a href="#financial" class="hover:text-emerald-500 transition-colors">Inversión</a>
             </div>
-            <a href="https://walink.co/s8b9sv" target="_blank" class="bg-emerald-700 text-white px-6 py-2.5 rounded-full font-bold text-xs shadow-md hover:bg-emerald-800 transition-all uppercase tracking-widest">
-                Agendar Visita
+            <a href="https://walink.co/s8b9sv" target="_blank" class="bg-emerald-700 text-white px-4 md:px-6 py-2 rounded-full font-bold text-[9px] md:text-xs shadow-md hover:bg-emerald-800 transition-all uppercase tracking-widest whitespace-nowrap">
+                Visitar
             </a>
         </div>
     </nav>
 
     <!-- Hero Section -->
-    <header id="hero" class="relative h-screen flex items-center justify-center hero-section">
-        <div class="relative z-10 text-center text-white px-6 max-w-5xl mx-auto animate-fade-in">
-            <div class="inline-block py-1 px-4 rounded-full bg-emerald-500/80 backdrop-blur-sm text-[10px] font-bold tracking-[0.3em] uppercase mb-6 shadow-lg">
-                Padrón Único • El Bosque • Solymar Sur
+    <header id="hero" class="relative hero-section min-h-[90vh] flex items-center justify-center pt-24 pb-16">
+        <div class="relative z-10 text-center text-white px-6 max-w-5xl mx-auto">
+            <div class="inline-flex items-center py-1 px-4 rounded-full bg-emerald-500/80 backdrop-blur-sm text-[8px] md:text-[10px] font-bold tracking-[0.3em] uppercase mb-6 shadow-lg border border-emerald-400/30">
+                Padrón Único • Solymar Sur
             </div>
-            <h1 class="text-5xl md:text-8xl font-extrabold mb-8 leading-tight drop-shadow-2xl">
+            <h1 class="text-3xl md:text-7xl lg:text-8xl font-extrabold mb-6 md:mb-8 leading-tight drop-shadow-2xl">
                 Espacio para <br><span class="text-emerald-400">tu nueva vida.</span>
             </h1>
-            <p class="text-xl md:text-2xl font-light mb-12 max-w-3xl mx-auto text-emerald-50 drop-shadow-md">
-                Chalet tradicional en un oasis de 760m² a solo 400 metros de la Rambla. El equilibrio perfecto entre amplitud, solidez y ubicación.
+            <p class="text-sm md:text-2xl font-light mb-10 md:mb-12 max-w-3xl mx-auto text-emerald-50 drop-shadow-md leading-relaxed">
+                Chalet tradicional en un oasis de 760m² a solo 400 metros de la Rambla. El equilibrio perfecto entre amplitud, solidez y ubicación privilegiada.
             </p>
-            <div class="flex flex-col sm:flex-row gap-6 justify-center">
-                <a href="https://casa.mercadolibre.com.uy/MLU-980181484-casa-en-venta-en-solymar-sur-padron-unico-760mts2-3-dormitorios-2-banos-garage-cochera-parrillero-y-patio-a-400-mts-rambla-_JM" target="_blank" class="btn-persuasive px-12 py-5 rounded-2xl text-xl font-bold flex items-center justify-center text-white shadow-xl">
-                    <i class="fa-solid fa-camera mr-3"></i> VER GALERÍA
+            <div class="flex flex-col sm:flex-row gap-4 md:gap-6 justify-center items-center">
+                <a href="https://casa.mercadolibre.com.uy/MLU-980181484-casa-en-venta-en-solymar-sur-padron-unico-760mts2-3-dormitorios-2-banos-garage-cochera-parrillero-y-patio-a-400-mts-rambla-_JM" target="_blank" class="w-full sm:w-auto btn-persuasive px-8 md:px-12 py-4 md:py-5 rounded-2xl text-xs md:text-xl font-bold flex items-center justify-center text-white shadow-xl uppercase tracking-widest">
+                    <i class="fa-solid fa-camera mr-3"></i> Ver Fotos
                 </a>
-                <a href="https://walink.co/s8b9sv" target="_blank" class="bg-white/10 backdrop-blur-md border border-white/30 text-white px-12 py-5 rounded-2xl text-xl font-bold hover:bg-white hover:text-emerald-900 transition-all flex items-center justify-center">
-                    <i class="fa-brands fa-whatsapp mr-3"></i> CONSULTAR AHORA
+                <a href="https://walink.co/s8b9sv" target="_blank" class="w-full sm:w-auto bg-white/20 backdrop-blur-md border border-white/40 text-white px-8 md:px-12 py-4 md:py-5 rounded-2xl text-xs md:text-xl font-bold hover:bg-white hover:text-emerald-900 transition-all flex items-center justify-center uppercase tracking-widest">
+                    <i class="fa-brands fa-whatsapp mr-3"></i> Consultar
                 </a>
             </div>
         </div>
     </header>
 
-    <main class="max-w-7xl mx-auto px-4 py-20">
-        <!-- Distribution -->
-        <section id="space" class="py-24 grid lg:grid-cols-2 gap-20 items-center border-b border-emerald-50">
-            <div class="bg-white p-12 rounded-[3.5rem] shadow-2xl border border-emerald-50">
-                <h3 class="text-2xl font-bold text-emerald-900 mb-8 text-center font-serif">Aprovechamiento del Terreno</h3>
-                <div class="relative h-80">
+    <main class="max-w-7xl mx-auto px-4">
+        <!-- Distribution Section -->
+        <section id="space" class="py-16 md:py-28 grid lg:grid-cols-2 gap-12 lg:gap-20 items-center border-b border-emerald-50">
+            <div class="bg-white p-6 md:p-12 rounded-[2.5rem] md:rounded-[3.5rem] shadow-2xl border border-emerald-50 order-2 lg:order-1 overflow-hidden">
+                <h3 class="text-lg md:text-2xl font-bold text-emerald-900 mb-8 text-center font-serif uppercase tracking-tight">Distribución del Padrón</h3>
+                <div class="chart-container">
                     <canvas id="landChart"></canvas>
                 </div>
-                <div class="mt-12 grid grid-cols-2 gap-6 text-center">
-                    <div class="p-6 bg-emerald-50 rounded-3xl">
-                        <span class="block text-3xl font-bold text-emerald-800">204m²</span>
-                        <p class="text-[10px] uppercase font-black text-emerald-600 tracking-widest mt-1">Edificados</p>
+                <div class="grid grid-cols-2 gap-3 md:gap-6 mt-4">
+                    <div class="p-4 md:p-6 bg-emerald-50 rounded-2xl md:rounded-3xl text-center">
+                        <span class="block text-lg md:text-3xl font-bold text-emerald-800">204m²</span>
+                        <p class="text-[7px] md:text-[10px] uppercase font-black text-emerald-600 tracking-widest mt-1">Edificados</p>
                     </div>
-                    <div class="p-6 bg-emerald-50 rounded-3xl">
-                        <span class="block text-3xl font-bold text-emerald-800">556m²</span>
-                        <p class="text-[10px] uppercase font-black text-emerald-600 tracking-widest mt-1">Área Libre</p>
+                    <div class="p-4 md:p-6 bg-emerald-50 rounded-2xl md:rounded-3xl text-center">
+                        <span class="block text-lg md:text-3xl font-bold text-emerald-800">556m²</span>
+                        <p class="text-[7px] md:text-[10px] uppercase font-black text-emerald-600 tracking-widest mt-1">Fondo Libre</p>
                     </div>
                 </div>
             </div>
-            <div>
-                <h2 class="text-4xl md:text-5xl font-bold text-emerald-900 mb-8 leading-tight">Privacidad total en padrón único.</h2>
-                <p class="text-lg text-gray-600 mb-8 leading-relaxed">
-                    Esta propiedad destaca por su <strong>padrón único de 760m²</strong>. En una de las zonas más residenciales de Solymar Sur, ofrece un fondo inmenso y cercado, ideal para disfrutar de la naturaleza con total comodidad y privacidad absoluta.
+            <div class="order-1 lg:order-2">
+                <h2 class="text-3xl md:text-5xl font-bold text-emerald-900 mb-6 md:mb-8 leading-tight text-center lg:text-left">Privacidad absoluta en Solymar Sur.</h2>
+                <p class="text-sm md:text-lg text-gray-600 mb-8 leading-relaxed text-center lg:text-left">
+                    Esta propiedad destaca por su <strong>padrón único de 760m²</strong>. Ubicada en la zona de El Bosque, ofrece un fondo inmenso y totalmente cercado, brindando la seguridad y calma que tu familia merece.
                 </p>
-                <div class="flex items-center p-8 bg-emerald-900 text-white rounded-[2.5rem] gap-8 shadow-xl">
-                    <div class="text-5xl"><i class="fa-solid fa-location-dot text-emerald-400"></i></div>
+                <div class="flex items-center p-6 md:p-8 bg-emerald-900 text-white rounded-[2rem] md:rounded-[2.5rem] gap-4 md:gap-6 shadow-xl">
+                    <div class="text-3xl md:text-5xl flex-shrink-0 text-emerald-400">
+                        <i class="fa-solid fa-location-dot"></i>
+                    </div>
                     <div>
-                        <p class="font-bold text-xl leading-tight">Ubicación Estratégica</p>
-                        <p class="text-emerald-200 text-sm font-medium">Calle Bahía Blanca esq. Gestido: A solo 400m del mar y cerca de todos los servicios.</p>
+                        <p class="font-bold text-sm md:text-xl leading-tight uppercase">Entorno Privilegiado</p>
+                        <p class="text-emerald-200 text-[10px] md:text-sm font-medium mt-1">Calle Bahía Blanca y Gestido: A solo 400m del mar.</p>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- Features -->
-        <section id="details" class="py-24">
-            <div class="text-center mb-16">
-                <h2 class="text-4xl font-bold text-emerald-900 mb-4 text-center">Detalles que Marcan la Diferencia</h2>
+        <!-- Features Section -->
+        <section id="details" class="py-16 md:py-28">
+            <div class="text-center mb-10 md:mb-16 px-4">
+                <h2 class="text-3xl md:text-4xl font-bold text-emerald-900 mb-4 uppercase tracking-tighter">Características</h2>
+                <p class="text-sm md:text-base text-gray-500 italic">Solidez constructiva y ambientes diseñados para el confort</p>
             </div>
-            <div class="flex justify-center mb-12">
-                <div class="bg-gray-100 p-2 rounded-[2rem] flex gap-2">
-                    <button onclick="switchTab('interior')" id="tab-interior" class="tab-active px-10 py-4 rounded-[1.5rem] font-bold text-xs uppercase tracking-widest transition-all">Interior</button>
-                    <button onclick="switchTab('exterior')" id="tab-exterior" class="px-10 py-4 rounded-[1.5rem] font-bold text-xs uppercase tracking-widest text-gray-500 transition-all hover:bg-gray-200">Exterior & Garage</button>
+            
+            <div class="flex justify-center mb-10 overflow-x-auto no-scrollbar px-4">
+                <div class="bg-gray-100 p-1 rounded-2xl flex gap-1 whitespace-nowrap shadow-inner">
+                    <button onclick="switchTab('interior')" id="tab-interior" class="tab-active px-6 md:px-12 py-3 md:py-4 rounded-xl md:rounded-[1.5rem] font-bold text-[9px] md:text-xs uppercase tracking-widest transition-all">Interior</button>
+                    <button onclick="switchTab('exterior')" id="tab-exterior" class="px-6 md:px-12 py-3 md:py-4 rounded-xl md:rounded-[1.5rem] font-bold text-[9px] md:text-xs uppercase tracking-widest text-gray-500 transition-all">Exterior</button>
                 </div>
             </div>
-            <div id="feature-container" class="grid md:grid-cols-2 lg:grid-cols-3 gap-8 min-h-[400px]"></div>
+
+            <div id="feature-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 px-2 md:px-0">
+                <!-- Inyección dinámica vía JS -->
+            </div>
         </section>
 
-        <!-- Financial -->
-        <section id="financial" class="py-24">
-            <div class="text-center mb-16">
-                <h2 class="text-4xl font-bold text-emerald-900 mb-4 text-center">Planifica tu Inversión</h2>
-                <p class="text-gray-500">Propiedad apta para cualquier banco de plaza.</p>
+        <!-- Calculator Section -->
+        <section id="financial" class="py-16 md:py-28 border-t border-emerald-50">
+            <div class="text-center mb-12 px-4">
+                <h2 class="text-3xl md:text-4xl font-bold text-emerald-900 mb-4 uppercase tracking-tighter">Planifica tu Inversión</h2>
+                <p class="text-xs md:text-sm text-gray-500">Documentación verificada, apta para préstamo hipotecario</p>
             </div>
-            <div class="max-w-4xl mx-auto bg-white rounded-[3.5rem] shadow-2xl border border-emerald-50 overflow-hidden flex flex-col md:flex-row">
-                <div class="p-12 md:w-1/2 bg-emerald-50">
-                    <h3 class="text-xl font-bold text-emerald-900 mb-10">Simulador</h3>
+            
+            <div class="max-w-4xl mx-auto bg-white rounded-[2.5rem] md:rounded-[3.5rem] shadow-2xl border border-emerald-50 overflow-hidden flex flex-col md:flex-row">
+                <!-- Form Side -->
+                <div class="p-8 md:p-12 md:w-1/2 bg-emerald-50">
+                    <h3 class="text-lg md:text-xl font-bold text-emerald-900 mb-8 uppercase text-xs tracking-widest">Calculadora</h3>
                     <div class="mb-10">
-                        <label class="font-bold text-emerald-800 uppercase text-[10px] tracking-widest">Seña / Entrega (U$S)</label>
-                        <input type="number" id="numIn" value="63000" class="w-full p-3 mt-2 rounded-xl border border-emerald-200 font-bold text-emerald-700 outline-none">
-                        <input type="range" id="rangeIn" min="31500" max="250000" step="1000" value="63000" class="w-full h-2 mt-4 bg-emerald-200 rounded-lg appearance-none">
+                        <label class="font-bold text-emerald-800 uppercase text-[10px] tracking-widest block mb-2">Entrega Inicial (U$S)</label>
+                        <input type="number" id="numIn" value="63000" class="w-full p-4 rounded-xl border border-emerald-200 font-bold text-emerald-700 outline-none focus:ring-2 focus:ring-emerald-400 text-lg">
+                        <input type="range" id="rangeIn" min="31500" max="250000" step="1000" value="63000" class="w-full h-2 mt-6 bg-emerald-200 rounded-lg appearance-none cursor-pointer">
                     </div>
-                    <div class="mb-8">
-                        <label class="block font-bold text-emerald-800 uppercase text-[10px] tracking-widest mb-4">Plazo</label>
-                        <div class="grid grid-cols-3 gap-3">
-                            <button onclick="setYears(15)" id="yr-15" class="py-3 rounded-2xl border border-emerald-200 bg-white font-bold text-xs text-gray-500 transition-all">15a</button>
-                            <button onclick="setYears(20)" id="yr-20" class="tab-active py-3 rounded-2xl font-bold text-xs transition-all">20a</button>
-                            <button onclick="setYears(25)" id="yr-25" class="py-3 rounded-2xl border border-emerald-200 bg-white font-bold text-xs text-gray-500 transition-all">25a</button>
+                    <div class="mb-2">
+                        <label class="block font-bold text-emerald-800 uppercase text-[10px] tracking-widest mb-4">Plazo de Financiación</label>
+                        <div class="grid grid-cols-3 gap-2 md:gap-3">
+                            <button onclick="setYears(15)" id="yr-15" class="py-3 rounded-2xl border border-emerald-200 bg-white font-bold text-[10px] md:text-xs text-gray-500 transition-all">15a</button>
+                            <button onclick="setYears(20)" id="yr-20" class="tab-active py-3 rounded-2xl font-bold text-[10px] md:text-xs transition-all shadow-md">20a</button>
+                            <button onclick="setYears(25)" id="yr-25" class="py-3 rounded-2xl border border-emerald-200 bg-white font-bold text-[10px] md:text-xs text-gray-500 transition-all">25a</button>
                         </div>
                     </div>
                 </div>
-                <div class="p-12 md:w-1/2 flex flex-col justify-center items-center text-center">
-                    <p class="text-gray-400 font-bold text-[10px] uppercase tracking-widest mb-4 text-center">Capital a Financiar</p>
-                    <span id="loanValue" class="text-4xl font-bold text-emerald-900 mb-10 text-center">U$S --</span>
-                    <div class="w-full bg-emerald-800 p-10 rounded-[3rem] shadow-xl text-white">
-                        <p class="text-[10px] uppercase font-black tracking-widest mb-3 opacity-60 text-center">Cuota Mensual Estimada</p>
-                        <span id="monthlyPayment" class="text-5xl font-black block text-center">U$S --</span>
+                <!-- Result Side -->
+                <div class="p-8 md:p-12 md:w-1/2 flex flex-col justify-center items-center text-center bg-white">
+                    <p class="text-gray-400 font-bold text-[10px] uppercase tracking-widest mb-2">Saldo a Financiar</p>
+                    <span id="loanValue" class="text-2xl md:text-4xl font-bold text-emerald-900 mb-8 md:mb-10">U$S --</span>
+                    <div class="w-full bg-emerald-800 p-8 md:p-12 rounded-[2.5rem] shadow-2xl text-white">
+                        <p class="text-[9px] md:text-[10px] uppercase font-black tracking-widest mb-3 opacity-70">Cuota Mensual Estimada</p>
+                        <span id="monthlyPayment" class="text-3xl md:text-5xl font-black block">U$S --</span>
+                        <p class="text-[8px] mt-4 opacity-50 uppercase tracking-tighter">Basado en tasas promedio del 4.8% anual</p>
                     </div>
                 </div>
             </div>
         </section>
     </main>
 
-    <!-- Map Full Width - Localización exacta Bahía Blanca y Gestido -->
-    <section class="w-full h-[600px] border-t-8 border-emerald-900 overflow-hidden relative">
+    <!-- Map Section -->
+    <div class="w-full h-[350px] md:h-[500px] border-t-8 border-emerald-900 mt-16 overflow-hidden">
         <iframe 
             src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3275.123!2d-55.9550!3d-34.8295!2m3!1f0!2f0!3f0!3m2!1i1024!2i1024!4f13.1!3m3!1m2!1s0x959f89a19614457f%3A0xa97196614457f0!2zQmFow61hIEJsYW5jYSAmIEdlc3RpZG8sIFNvbHltYXIsIENhbmVsb25lcw!5e0!3m2!1ses!2suy!4v1703640000000!5m2!1ses!2suy" 
             width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
-    </section>
+    </div>
 
-    <footer class="bg-gray-950 text-gray-500 py-24 px-6">
-        <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-16 text-center md:text-left">
-            <img src="Logo.png" alt="Rafa Osorio" class="h-16 w-auto opacity-60 bg-transparent" onerror="this.src='https://placehold.co/180x60/111827/ffffff?text=Rafa+Osorio'">
+    <!-- Footer -->
+    <footer class="bg-gray-950 text-gray-500 py-16 md:py-24 px-6">
+        <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-12 text-center md:text-left">
+            <img src="Logo.png" alt="Rafa Osorio" class="h-12 md:h-16 w-auto opacity-70 grayscale" onerror="this.src='https://placehold.co/180x60/111827/ffffff?text=Rafa+Osorio'">
             <div class="max-w-sm">
-                <p class="text-sm">Comercializa: <strong>Rafa Osorio</strong></p>
-                <p class="text-xs mt-2 uppercase tracking-widest">Solymar Sur | Canelones | Bahía Blanca y Gestido</p>
+                <p class="text-sm font-bold text-white mb-2 uppercase tracking-widest">Residencia Solymar Sur</p>
+                <p class="text-xs uppercase tracking-widest leading-loose">Comercializa: <strong>Rafa Osorio</strong> <br> El Bosque | Ciudad de la Costa</p>
             </div>
-            <div class="text-[9px] font-bold tracking-[0.3em] uppercase opacity-50">© 2025 RAFA OSORIO REAL ESTATE</div>
+            <div class="text-[9px] font-bold tracking-[0.3em] uppercase opacity-40">© 2025 RAFA OSORIO REAL ESTATE</div>
         </div>
     </footer>
 
@@ -215,12 +247,12 @@
             interior: [
                 { title: "Living-Comedor", icon: "fa-couch", desc: "Ambiente cálido con <strong>estufa a leña</strong> de alto rendimiento para el máximo confort." },
                 { title: "3 Dormitorios", icon: "fa-bed", desc: "Habitaciones amplias de construcción tradicional, con excelente luz natural." },
-                { title: "Cocina y Baños", icon: "fa-utensils", desc: "Cocina funcional y 2 baños completos recientemente reciclados a nuevo." }
+                { title: "Baños y Cocina", icon: "fa-utensils", desc: "Cocina definida funcional y 2 baños completos recientemente reciclados." }
             ],
             exterior: [
-                { title: "Garage y Cochera", icon: "fa-car", desc: "Cuenta con <strong>garage cerrado</strong> y una amplia <strong>cochera techada</strong> para vehículos." },
-                { title: "Parrillero", icon: "fa-fire", desc: "Espacio techado con parrillero y horno de barro, ideal para reuniones sociales." },
-                { title: "Padrón Único", icon: "fa-tree", desc: "Inmenso terreno de 760m² totalmente cercado, brindando privacidad y espacio libre." }
+                { title: "Garage y Cochera", icon: "fa-car", desc: "Dispone de <strong>garage cerrado</strong> y una amplia <strong>cochera techada</strong> para varios vehículos." },
+                { title: "Barbacoa", icon: "fa-fire", desc: "Gran barbacoa techada con parrillero y horno de barro para reuniones sociales." },
+                { title: "Inmenso Jardín", icon: "fa-tree", desc: "760m² de terreno propio totalmente cercado, brindando privacidad absoluta." }
             ]
         };
 
@@ -230,17 +262,17 @@
             ['interior', 'exterior'].forEach(id => {
                 const btn = document.getElementById('tab-' + id);
                 if (btn) {
-                    btn.className = id === cat ? 'tab-active px-10 py-4 rounded-[1.5rem] font-bold text-xs uppercase tracking-widest transition-all' : 'px-10 py-4 rounded-[1.5rem] font-bold text-xs uppercase tracking-widest text-gray-500 transition-all hover:bg-gray-200';
+                    btn.className = id === cat ? 'tab-active px-6 md:px-12 py-3 md:py-4 rounded-xl md:rounded-[1.5rem] font-bold text-[9px] md:text-xs uppercase tracking-widest transition-all shadow-md' : 'px-6 md:px-12 py-3 md:py-4 rounded-xl md:rounded-[1.5rem] font-bold text-[9px] md:text-xs uppercase tracking-widest text-gray-500 transition-all hover:bg-gray-200';
                 }
             });
             setTimeout(() => {
                 container.innerHTML = features[cat].map(f => `
-                    <div class="bg-white p-10 rounded-[3rem] shadow-sm border border-emerald-50 card-style flex flex-col items-center text-center">
-                        <div class="w-16 h-16 bg-emerald-50 rounded-2xl flex items-center justify-center text-emerald-700 text-3xl mb-8">
+                    <div class="bg-white p-8 md:p-10 rounded-[2.5rem] md:rounded-[3rem] shadow-sm border border-emerald-50 card-style flex flex-col items-center text-center">
+                        <div class="w-12 h-12 md:w-16 md:h-16 bg-emerald-50 rounded-2xl flex items-center justify-center text-emerald-700 text-xl md:text-2xl mb-6">
                             <i class="fa-solid ${f.icon}"></i>
                         </div>
-                        <h4 class="text-xl font-bold text-emerald-900 mb-4">${f.t ? f.t : f.title}</h4>
-                        <p class="text-gray-500 text-sm leading-relaxed">${f.desc}</p>
+                        <h4 class="text-base md:text-lg font-bold text-emerald-900 mb-3 uppercase tracking-tight">${f.title}</h4>
+                        <p class="text-gray-500 text-[11px] md:text-sm leading-relaxed">${f.desc}</p>
                     </div>
                 `).join('');
                 container.style.opacity = '1';
@@ -248,20 +280,34 @@
         }
 
         function initCharts() {
-            new Chart(document.getElementById('landChart'), {
+            const ctx = document.getElementById('landChart').getContext('2d');
+            new Chart(ctx, {
                 type: 'doughnut',
                 data: {
                     labels: ['Edificado', 'Jardín'],
                     datasets: [{
                         data: [204, 556],
                         backgroundColor: ['#064E3B', '#10B981'],
-                        borderWidth: 0
+                        borderWidth: 0,
+                        hoverOffset: 15
                     }]
                 },
                 options: {
                     responsive: true,
                     maintainAspectRatio: false,
-                    plugins: { legend: { position: 'bottom', labels: { font: { weight: 'bold' } } } },
+                    plugins: { 
+                        legend: { 
+                            position: 'bottom',
+                            labels: {
+                                padding: 20,
+                                font: {
+                                    family: 'Montserrat',
+                                    size: 9,
+                                    weight: 'bold'
+                                }
+                            }
+                        } 
+                    },
                     cutout: '75%'
                 }
             });
@@ -272,7 +318,7 @@
             [15, 20, 25].forEach(y => {
                 const btn = document.getElementById('yr-' + y);
                 if (btn) {
-                    btn.className = y === yr ? 'tab-active py-3 rounded-2xl font-bold text-xs transition-all' : 'py-3 rounded-2xl border border-emerald-200 bg-white font-bold text-xs text-gray-500 transition-all hover:border-emerald-500';
+                    btn.className = y === yr ? 'tab-active py-3 rounded-2xl font-bold text-[10px] md:text-xs transition-all shadow-md' : 'py-3 rounded-2xl border border-emerald-200 bg-white font-bold text-[10px] md:text-xs text-gray-500 transition-all hover:border-emerald-500';
                 }
             });
             updateCalc();

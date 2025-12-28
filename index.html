@@ -12,6 +12,7 @@
         rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
 
     <style>
         :root {
@@ -44,14 +45,14 @@
         }
 
         .hero-section {
-            background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.6)), url('https://lh3.googleusercontent.com/d/1z43ohxGCQGrOGYwhfGhnVy6LWFjTDnhF');
-            background-size: cover;
-            background-position: center;
+            background-color: #000;
             min-height: 100vh;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
+            position: relative;
+            overflow: hidden;
         }
 
         .luxury-glass {
@@ -81,67 +82,56 @@
             background: #053b2d;
         }
 
-        .btn-video {
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(15px);
-            border: 1px solid rgba(255, 255, 255, 0.4);
-            color: white;
-            transition: all 0.4s ease;
+        /* Swiper Custom Styles */
+        .swiper {
+            width: 100%;
+            padding-bottom: 50px !important;
         }
 
-        .btn-video:hover {
-            background: rgba(255, 255, 255, 0.25);
-            border-color: white;
-            transform: scale(1.05);
+        .swiper-slide {
+            background-position: center;
+            background-size: cover;
+            width: 300px;
+            height: 400px;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .swiper-slide img {
+            display: block;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .swiper-button-next,
+        .swiper-button-prev {
+            color: var(--primary) !important;
+            background: rgba(255, 255, 255, 0.8);
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            backdrop-filter: blur(5px);
+            display: none;
+        }
+
+        @media (min-width: 768px) {
+
+            .swiper-button-next,
+            .swiper-button-prev {
+                display: flex;
+            }
+        }
+
+        .swiper-pagination-bullet-active {
+            background: var(--primary) !important;
         }
 
         .chart-container {
             height: 350px;
             position: relative;
-        }
-
-        /* Gallery Grid */
-        .gallery-grid {
-            column-count: 1;
-            column-gap: 1.5rem;
-        }
-
-        @media (min-width: 768px) {
-            .gallery-grid {
-                column-count: 2;
-            }
-        }
-
-        @media (min-width: 1024px) {
-            .gallery-grid {
-                column-count: 3;
-            }
-        }
-
-        .gallery-item {
-            break-inside: avoid;
-            margin-bottom: 1.5rem;
-            border-radius: 1.5rem;
-            overflow: hidden;
-            position: relative;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-            transition: all 0.5s ease;
-        }
-
-        .gallery-item:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
-        }
-
-        .gallery-item img {
-            width: 100%;
-            height: auto;
-            display: block;
-            transition: transform 0.7s ease;
-        }
-
-        .gallery-item:hover img {
-            transform: scale(1.05);
         }
 
         /* Animation Utility */
@@ -170,25 +160,35 @@
             }
         }
 
-        .pulse-icon {
-            animation: pulse-ring 2s cubic-bezier(0.455, 0.03, 0.515, 0.955) infinite;
-        }
-
-        @keyframes pulse-ring {
+        /* Attention Animation */
+        @keyframes subtle-pulse {
             0% {
-                transform: scale(0.9);
-                opacity: 1;
+                transform: scale(1);
+                box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7);
             }
 
-            50% {
-                transform: scale(1);
-                opacity: 0.8;
+            70% {
+                transform: scale(1.03);
+                box-shadow: 0 0 0 10px rgba(16, 185, 129, 0);
             }
 
             100% {
-                transform: scale(0.9);
-                opacity: 1;
+                transform: scale(1);
+                box-shadow: 0 0 0 0 rgba(16, 185, 129, 0);
             }
+        }
+
+        .btn-attention {
+            animation: subtle-pulse 2s infinite;
+        }
+
+        .service-card {
+            transition: all 0.3s ease;
+        }
+
+        .service-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
         }
     </style>
 </head>
@@ -204,9 +204,10 @@
             </div>
             <div class="hidden md:flex space-x-12 font-medium text-[11px] uppercase tracking-[0.25em] text-gray-800">
                 <a href="#hero" class="hover:text-emerald-700 transition-colors">Inicio</a>
-                <a href="#dream" class="hover:text-emerald-700 transition-colors">Video</a>
+                <a href="#family" class="hover:text-emerald-700 transition-colors">Familia</a>
                 <a href="#space" class="hover:text-emerald-700 transition-colors">Distribución</a>
                 <a href="#gallery" class="hover:text-emerald-700 transition-colors">Galería</a>
+                <a href="#services" class="hover:text-emerald-700 transition-colors">Entorno</a>
                 <a href="#financial" class="hover:text-emerald-700 transition-colors">Inversión</a>
             </div>
             <div class="flex items-center gap-4">
@@ -220,7 +221,27 @@
 
     <!-- Hero Section -->
     <header id="hero" class="relative hero-section w-full pt-32 pb-20 px-6">
-        <div class="absolute inset-0 bg-black/40"></div>
+        <!-- Desktop Video -->
+        <div class="hidden md:block absolute inset-0 z-0 overflow-hidden pointer-events-none">
+            <iframe
+                src="https://player.mediadelivery.net/embed/571229/bbcbddc1-062e-467b-8d4f-1f2c75e437d3?autoplay=true&loop=true&muted=true&controls=false&showinfo=0"
+                class="w-full h-full pointer-events-none" frameborder="0"
+                allow="autoplay; fullscreen; picture-in-picture"
+                style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; transform: scale(1.1);">
+            </iframe>
+        </div>
+
+        <!-- Mobile Video (Recorrido) -->
+        <div class="md:hidden absolute inset-0 z-0 overflow-hidden pointer-events-none">
+            <iframe
+                src="https://player.mediadelivery.net/embed/571229/144ff18a-e334-4445-a2c9-c69995f9c136?autoplay=true&loop=true&muted=true&controls=false&showinfo=0"
+                class="w-full h-full pointer-events-none" frameborder="0"
+                allow="autoplay; fullscreen; picture-in-picture"
+                style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; transform: scale(1.3);">
+            </iframe>
+        </div>
+
+        <div class="absolute inset-0 bg-black/40 z-0"></div>
 
         <div class="relative z-10 w-full max-w-6xl mx-auto flex flex-col items-center text-center">
 
@@ -233,7 +254,7 @@
 
             <h1 class="hero-reveal text-5xl md:text-8xl lg:text-9xl font-bold mb-8 leading-[1.1] drop-shadow-2xl text-white"
                 style="animation-delay: 0.4s">
-                Redefine tu <br><span class="italic font-normal">estilo de vida.</span>
+                Redefiní tu <br><span class="italic font-normal">estilo de vida.</span>
             </h1>
 
             <p class="hero-reveal text-base md:text-2xl font-light mb-12 max-w-3xl mx-auto text-white/90 leading-relaxed"
@@ -244,21 +265,9 @@
 
             <div class="hero-reveal flex flex-col md:flex-row gap-6 justify-center items-center w-full"
                 style="animation-delay: 0.8s">
-                <a href="#dream"
-                    class="w-full md:w-auto btn-video px-10 py-5 rounded-2xl text-[12px] font-bold flex items-center justify-center uppercase tracking-widest group">
-                    <div
-                        class="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center mr-4 group-hover:bg-white/40 transition-colors">
-                        <i class="fa-solid fa-play text-white pulse-icon"></i>
-                    </div>
-                    Ver Video
-                </a>
-                <a href="#gallery"
-                    class="w-full md:w-auto btn-luxury px-12 py-5 rounded-2xl text-[12px] font-bold flex items-center justify-center uppercase tracking-widest shadow-2xl">
-                    <i class="fa-solid fa-camera mr-3"></i> Galería
-                </a>
-                <a href="https://walink.co/s8b9sv" target="_blank"
-                    class="w-full md:w-auto luxury-glass text-white px-10 py-5 rounded-2xl text-[12px] font-bold hover:bg-white hover:text-black transition-all flex items-center justify-center uppercase tracking-widest">
-                    <i class="fa-brands fa-whatsapp mr-3"></i> Consultar
+                <a href="#family"
+                    class="w-full md:w-auto btn-luxury btn-attention px-14 py-6 rounded-2xl text-[14px] font-bold flex items-center justify-center uppercase tracking-widest shadow-2xl">
+                    Conocé tu futuro hogar <i class="fa-solid fa-arrow-down ml-3"></i>
                 </a>
             </div>
 
@@ -269,40 +278,30 @@
     </header>
 
     <main>
-        <!-- NEW: Emotional Video Section -->
-        <section id="dream" class="py-24 bg-emerald-950 relative overflow-hidden">
-            <div class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-5">
-            </div>
+        <!-- Family Emotional Section -->
+        <section id="family" class="py-24 bg-emerald-50 relative overflow-hidden">
             <div class="max-w-4xl mx-auto px-6 text-center relative z-10 will-animate">
-                <span class="text-white/60 font-bold tracking-[0.4em] uppercase text-[10px] mb-8 block">Experiencia
-                    Visual</span>
-                <h2 class="text-4xl md:text-6xl font-bold text-white mb-8">El hogar de tu familia.</h2>
-                <p class="text-emerald-100/80 text-lg font-light mb-12 max-w-2xl mx-auto">
-                    Imagina los domingos en el jardín, el silencio de la noche y la seguridad de un espacio pensado para
-                    crear recuerdos eternos.
+                <h2 class="text-3xl md:text-5xl font-bold text-emerald-900 mb-6 font-serif">El próximo hogar de tu
+                    familia</h2>
+                <div class="w-24 h-1 bg-emerald-600 mx-auto mb-8"></div>
+                <!-- UPDATED: Text Color Darker & Localized Copy -->
+                <p class="text-lg md:text-xl text-gray-800 font-medium mb-12 max-w-2xl mx-auto leading-relaxed">
+                    Imaginá despertar con el canto de los pájaros, ver a tus hijos correr libres en un jardín inmenso y
+                    seguro.
+                    Acá, la naturaleza no es un adorno, es parte de tu vida diaria. Un refugio de paz donde construirán
+                    los recuerdos más felices de su infancia.
                 </p>
 
-                <div
-                    class="relative w-full max-w-sm mx-auto aspect-[9/16] rounded-3xl overflow-hidden shadow-2xl border border-white/10 group">
-                    <!-- Overlay / Cover -->
-                    <div id="videoOverlay"
-                        class="absolute inset-0 bg-black/40 flex flex-col items-center justify-center z-20 transition-all duration-500 cursor-pointer"
-                        onclick="playVideo()">
-                        <div
-                            class="w-20 h-20 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
-                            <i class="fa-solid fa-play text-white text-3xl pl-1"></i>
-                        </div>
-                        <span class="text-white text-xs font-bold uppercase tracking-widest">Comenzar Experiencia</span>
-                    </div>
+                <p class="mb-6 text-emerald-800 font-bold text-lg animate-pulse">
+                    <i class="fa-solid fa-arrow-down mr-2"></i> Dale play para ver el futuro de tu familia
+                </p>
 
-                    <!-- Sound Control -->
-                    <button id="soundToggle" onclick="toggleSound()"
-                        class="absolute top-4 right-4 z-30 w-10 h-10 bg-black/50 backdrop-blur-md rounded-full text-white flex items-center justify-center opacity-0 transition-opacity pointer-events-none">
-                        <i id="soundIcon" class="fa-solid fa-volume-xmark"></i>
-                    </button>
-
-                    <!-- YouTube Iframe -->
-                    <div id="player" class="absolute inset-0 w-full h-full"></div>
+                <div class="relative w-full aspect-video rounded-3xl overflow-hidden shadow-2xl border-4 border-white">
+                    <iframe
+                        src="https://player.mediadelivery.net/embed/571229/43609911-257b-4476-834c-9293a2cdd1d5?autoplay=false&loop=false&muted=false"
+                        class="absolute inset-0 w-full h-full" frameborder="0" allow="fullscreen; picture-in-picture"
+                        allowfullscreen>
+                    </iframe>
                 </div>
             </div>
         </section>
@@ -359,30 +358,17 @@
                         esta propiedad ofrece un terreno excepcionalmente amplio, totalmente cercado, que garantiza la
                         seguridad y tranquilidad absoluta que su familia exige.
                     </p>
-                    <div class="flex flex-col items-center lg:flex-row lg:items-start gap-8 will-animate">
-                        <div
-                            class="w-16 h-16 bg-emerald-900 text-white rounded-3xl flex items-center justify-center text-2xl flex-shrink-0 shadow-lg">
-                            <i class="fa-solid fa-location-dot"></i>
-                        </div>
-                        <div>
-                            <p class="font-bold text-xl uppercase tracking-tight text-gray-900">Ubicación Estratégica
-                            </p>
-                            <p class="text-gray-500 font-medium mt-2 leading-relaxed">Calle Bahía Blanca y Gestido: A
-                                metros de la Rambla, en el corazón de Solymar Sur.</p>
-                        </div>
-                    </div>
                 </div>
             </div>
         </section>
 
-        <!-- Gallery Section (Replaces Attributes) -->
-        <section id="gallery" class="py-32 bg-gray-50">
+        <!-- Gallery Section -->
+        <section id="gallery" class="py-32 bg-gray-50 overflow-hidden">
             <div class="max-w-7xl mx-auto px-6">
                 <div class="text-center mb-16 will-animate">
                     <h2 class="text-3xl md:text-5xl font-bold text-emerald-900 mb-6 uppercase tracking-tight">Galería
                         Visual</h2>
-                    <div class="w-24 h-1 bg-emerald-600 mx-auto mb-6"></div>
-                    <p class="text-lg text-gray-500 font-light max-w-2xl mx-auto">Recorre cada rincón de tu próximo
+                    <p class="text-lg text-gray-500 font-light max-w-2xl mx-auto">Recorré cada rincón de tu próximo
                         hogar.</p>
                 </div>
 
@@ -395,8 +381,149 @@
                     </div>
                 </div>
 
-                <div id="gallery-container" class="opacity-0 transition-opacity duration-500 min-h-[400px]">
-                    <!-- Images Injected Here -->
+                <!-- Swiper Container -->
+                <div class="swiper mySwiper will-animate">
+                    <div class="swiper-wrapper" id="gallery-wrapper">
+                        <!-- Images Injected Here via JS -->
+                    </div>
+                    <div class="swiper-pagination"></div>
+                    <div class="swiper-button-next"></div>
+                    <div class="swiper-button-prev"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Recorrido Video Section -->
+        <section class="py-20 bg-emerald-950">
+            <div class="max-w-5xl mx-auto px-6 text-center will-animate">
+                <h3 class="text-2xl md:text-3xl font-bold text-white mb-8 font-serif">Recorrido Completo</h3>
+                <div class="relative w-full aspect-video rounded-3xl overflow-hidden shadow-2xl border border-white/20">
+                    <!-- UPDATED: Using the requested video bbcbddc1... -->
+                    <iframe
+                        src="https://player.mediadelivery.net/embed/571229/bbcbddc1-062e-467b-8d4f-1f2c75e437d3?autoplay=false&loop=false&muted=false"
+                        class="absolute inset-0 w-full h-full" frameborder="0" allow="fullscreen; picture-in-picture"
+                        allowfullscreen>
+                    </iframe>
+                </div>
+            </div>
+        </section>
+
+        <!-- Services Section -->
+        <section id="services" class="py-24 bg-emerald-900/5 relative">
+            <div class="max-w-7xl mx-auto px-6">
+                <div class="text-center mb-20 will-animate">
+                    <span class="text-emerald-700 font-bold tracking-[0.3em] uppercase text-xs mb-4 block">Entorno
+                        Premium</span>
+                    <h2 class="text-3xl md:text-5xl font-bold text-gray-900">Todo a tu alcance.</h2>
+                </div>
+
+                <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6 will-animate">
+
+                    <!-- Supermercados -->
+                    <div class="service-card bg-white p-8 rounded-3xl shadow-sm hover:shadow-xl border border-gray-100">
+                        <div
+                            class="w-12 h-12 bg-emerald-100 text-emerald-800 rounded-2xl flex items-center justify-center text-xl mb-6">
+                            <i class="fa-solid fa-cart-shopping"></i>
+                        </div>
+                        <h3 class="font-bold text-lg mb-4 text-emerald-950">Compras</h3>
+                        <ul class="space-y-3 text-sm text-gray-600">
+                            <li class="flex items-start gap-2">
+                                <i class="fa-solid fa-check text-emerald-500 mt-1"></i>
+                                <div>
+                                    <span class="font-bold text-gray-800">Buenas Migas</span>
+                                    <p class="text-xs opacity-70">En la esquina (Gestido y Uruguay)</p>
+                                </div>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <i class="fa-solid fa-check text-emerald-500 mt-1"></i>
+                                <div>
+                                    <span class="font-bold text-gray-800">Supermercado TA-TA</span>
+                                </div>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <i class="fa-solid fa-check text-emerald-500 mt-1"></i>
+                                <span>Disco Médanos <br><span class="text-xs opacity-70">(Av.
+                                        Giannattasio)</span></span>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- Educación -->
+                    <div class="service-card bg-white p-8 rounded-3xl shadow-sm hover:shadow-xl border border-gray-100">
+                        <div
+                            class="w-12 h-12 bg-blue-100 text-blue-800 rounded-2xl flex items-center justify-center text-xl mb-6">
+                            <i class="fa-solid fa-graduation-cap"></i>
+                        </div>
+                        <h3 class="font-bold text-lg mb-4 text-emerald-950">Educación</h3>
+                        <ul class="space-y-3 text-sm text-gray-600">
+                            <li class="flex items-start gap-2">
+                                <i class="fa-solid fa-check text-blue-500 mt-1"></i>
+                                <div>
+                                    <span class="font-bold text-gray-800">Colegio Integral</span>
+                                    <p class="text-xs opacity-70">A pocas cuadras (Calle 36)</p>
+                                </div>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <i class="fa-solid fa-check text-blue-500 mt-1"></i>
+                                <span>Liceo N° 1 "Jorge Lazaroff"</span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <i class="fa-solid fa-check text-blue-500 mt-1"></i>
+                                <span>Jardín Campanita Azul</span>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- Salud -->
+                    <div class="service-card bg-white p-8 rounded-3xl shadow-sm hover:shadow-xl border border-gray-100">
+                        <div
+                            class="w-12 h-12 bg-red-100 text-red-800 rounded-2xl flex items-center justify-center text-xl mb-6">
+                            <i class="fa-solid fa-heart-pulse"></i>
+                        </div>
+                        <h3 class="font-bold text-lg mb-4 text-emerald-950">Salud</h3>
+                        <ul class="space-y-3 text-sm text-gray-600">
+                            <li class="flex items-start gap-2">
+                                <i class="fa-solid fa-check text-red-500 mt-1"></i>
+                                <div>
+                                    <span class="font-bold text-gray-800">Casmu</span>
+                                    <p class="text-xs opacity-70">Policlínica Solymar</p>
+                                </div>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <i class="fa-solid fa-check text-red-500 mt-1"></i>
+                                <span>Asociación Española</span>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- Conectividad -->
+                    <div class="service-card bg-white p-8 rounded-3xl shadow-sm hover:shadow-xl border border-gray-100">
+                        <div
+                            class="w-12 h-12 bg-indigo-100 text-indigo-800 rounded-2xl flex items-center justify-center text-xl mb-6">
+                            <i class="fa-solid fa-bus"></i>
+                        </div>
+                        <h3 class="font-bold text-lg mb-4 text-emerald-950">Conectividad</h3>
+                        <ul class="space-y-3 text-sm text-gray-600">
+                            <li class="flex items-start gap-2">
+                                <i class="fa-solid fa-check text-indigo-500 mt-1"></i>
+                                <div>
+                                    <span class="font-bold text-gray-800">Parada en la Esquina</span>
+                                    <p class="text-xs opacity-70">Gestido y Uruguay</p>
+                                    <p class="text-[10px] font-bold text-emerald-700 mt-1">Líneas: 707, 708, 7E7R, L5
+                                    </p>
+                                </div>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <i class="fa-solid fa-check text-indigo-500 mt-1"></i>
+                                <span class="font-bold text-gray-800">Cercanía a Giannattasio</span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <i class="fa-solid fa-check text-indigo-500 mt-1"></i>
+                                <span>Acceso rápido a Montevideo</span>
+                            </li>
+                        </ul>
+                    </div>
+
                 </div>
             </div>
         </section>
@@ -407,7 +534,7 @@
                 <div class="will-animate text-center lg:text-left">
                     <span class="text-emerald-700 font-bold tracking-[0.3em] uppercase text-xs mb-6 block">Inversión
                         Inteligente</span>
-                    <h2 class="text-3xl md:text-5xl font-bold text-gray-900 mb-8 leading-tight">Proyecta tu futuro con
+                    <h2 class="text-3xl md:text-5xl font-bold text-gray-900 mb-8 leading-tight">Proyectá tu futuro con
                         <br><span class="italic font-normal">claridad financiera.</span>
                     </h2>
                     <p class="text-lg text-gray-600 mb-10 leading-relaxed lg:text-justify">
@@ -481,23 +608,37 @@
     <!-- Map & Contact Footer -->
     <div class="w-full bg-emerald-950 pt-24">
         <div class="max-w-7xl mx-auto px-6 mb-24 grid md:grid-cols-2 gap-16 text-white items-center will-animate">
-            <div class="text-center md:text-left">
-                <h2 class="text-4xl md:text-5xl font-bold mb-8">Hablemos de tu <br>próxima casa.</h2>
+            <div class="order-1 md:order-1 text-center md:text-left">
+                <h2 class="text-4xl md:text-5xl font-bold mb-6">La ubicación de tu próximo hogar.</h2>
+                <div
+                    class="md:hidden h-[300px] w-full mb-8 rounded-[2rem] overflow-hidden border-4 border-white/10 grayscale">
+                    <iframe
+                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3275.123!2d-55.9550!3d-34.8295!2m3!1f0!2f0!3f0!3m2!1i1024!2i1024!4f13.1!3m3!1m2!1s0x959f89a19614457f%3A0xa97196614457f0!2zQmFow61hIEJsYW5jYSAmIEdlc3RpZG8sIFNvbHltYXIsIENhbmVsb25lcw!5e0!3m2!1ses!2suy!4v1703640000000!5m2!1ses!2suy"
+                        width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+                </div>
+
+                <p class="text-emerald-100/70 text-lg font-light mb-10 leading-relaxed">
+                    Esta zona en constante crecimiento no solo ofrece paz y seguridad, sino la certeza de ver a tus
+                    hijos crecer en un entorno sano, tranquilo y rodeado de oportunidades. Tu familia merece esta
+                    calidad de vida.
+                </p>
+
                 <div class="space-y-8 flex flex-col items-center md:items-start">
                     <a href="https://walink.co/s8b9sv" target="_blank"
-                        class="flex items-center gap-6 group hover:translate-x-3 transition-transform">
-                        <div class="w-20 h-20 bg-emerald-600 rounded-full flex items-center justify-center text-3xl">
-                            <i class="fa-brands fa-whatsapp"></i>
-                        </div>
-                        <div>
-                            <p class="text-sm opacity-50 uppercase tracking-widest">Atención inmediata</p>
-                            <p class="text-2xl font-bold">Consultar Disponibilidad</p>
-                        </div>
+                        class="px-10 py-5 bg-emerald-600 text-white rounded-full font-bold text-sm uppercase tracking-widest hover:bg-emerald-500 hover:scale-105 transition-all shadow-lg animate-pulse">
+                        VENÍ A CONOCERLA
                     </a>
+
+                    <div class="flex items-center gap-4 opacity-50 mt-4">
+                        <i class="fa-brands fa-whatsapp text-2xl"></i>
+                        <span class="text-sm tracking-widest">Respuesta inmediata</span>
+                    </div>
                 </div>
             </div>
+
+            <!-- Desktop Map (Hidden on mobile to change order) -->
             <div
-                class="h-[400px] rounded-[3rem] overflow-hidden border-8 border-white/10 grayscale hover:grayscale-0 transition-all duration-700">
+                class="hidden md:block order-2 h-[400px] rounded-[3rem] overflow-hidden border-8 border-white/10 grayscale hover:grayscale-0 transition-all duration-700">
                 <iframe
                     src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3275.123!2d-55.9550!3d-34.8295!2m3!1f0!2f0!3f0!3m2!1i1024!2i1024!4f13.1!3m3!1m2!1s0x959f89a19614457f%3A0xa97196614457f0!2zQmFow61hIEJsYW5jYSAmIEdlc3RpZG8sIFNvbHltYXIsIENhbmVsb25lcw!5e0!3m2!1ses!2suy!4v1703640000000!5m2!1ses!2suy"
                     width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
@@ -518,39 +659,81 @@
         </footer>
     </div>
 
-    <!-- YouTube API -->
-    <script src="https://www.youtube.com/iframe_api"></script>
+    <!-- Swiper JS -->
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+
     <script>
         const PROPERTY_PRICE = 315000;
         let selectedYears = 20;
+        let gallerySwiper = null;
 
-        // --- Gallery Images (IDs extracted from user provided links) ---
+        // --- Gallery Images ---
         const galleryImages = {
             interior: [
-                '1qhm2jcVYipGLXS1QnV_G-B7YvgRVDAj8', '1h9CIsaOpyIgwkXmFkwqvFygt_gKg8vA1',
-                '1Wtw6squ04Wc3PlrC1g92PFPd0XIxlaGn', '1S_ipGRaH3BiLwwquKkKxlaNfJ7rp-N61',
-                '1WvFopCz_GDGy-l89wIGKbvDwv0byDu_Z', '1wWBH5M687EWuPseDCCmBrWtai0m1v82O',
-                '1xqQNanlG7KVvGAJ4xWLualW9uZEPDXDI', '19afTufIcLxwTDLDl5cWJiMssiy1e6o6C',
-                '1fcDWr2u1n2PZX_2Gf1XizZ9YR509uaKY', '1oGB-yHSKVBjsPL4TAiVEYTaJsB5pfPRQ',
-                '1GmcDwAcfcRrzBkMvNZCJUEl-0hsAxbAC', '1hoDQ7rA3F7TokPgikFqhQO_vdgIc44_A',
+                '1qhm2jcVYipGLXS1QnV_G-B7YvgRVDAj8', // ID
+                '1h9CIsaOpyIgwkXmFkwqvFygt_gKg8vA1',
+                '1Wtw6squ04Wc3PlrC1g92PFPd0XIxlaGn',
+                '1S_ipGRaH3BiLwwquKkKxlaNfJ7rp-N61',
+                '1WvFopCz_GDGy-l89wIGKbvDwv0byDu_Z',
+                '1wWBH5M687EWuPseDCCmBrWtai0m1v82O',
+                '1xqQNanlG7KVvGAJ4xWLualW9uZEPDXDI',
+                '19afTufIcLxwTDLDl5cWJiMssiy1e6o6C',
+                '1fcDWr2u1n2PZX_2Gf1XizZ9YR509uaKY',
+                '1oGB-yHSKVBjsPL4TAiVEYTaJsB5pfPRQ',
+                '1GmcDwAcfcRrzBkMvNZCJUEl-0hsAxbAC',
+                '1hoDQ7rA3F7TokPgikFqhQO_vdgIc44_A',
                 '1hJJ47Vm-FWSNL8l_-s3HPr8d4O8W4Vbj'
             ],
             exterior: [
-                '1QfcjX48cMJzumiSF2ZYkIU2jmwkJGpjb', '1l0Ae0dsIcR5Pbxk-r172UjNQTRjUAIHO',
-                '1lcvoVaWLEYzht4CC5Zfzd2IbhMUoBQmm', '1y0UZMYO8by9KVUhVplQFXRLT0eEtpYu1',
+                '1QfcjX48cMJzumiSF2ZYkIU2jmwkJGpjb',
+                '1l0Ae0dsIcR5Pbxk-r172UjNQTRjUAIHO',
+                '1lcvoVaWLEYzht4CC5Zfzd2IbhMUoBQmm',
+                '1y0UZMYO8by9KVUhVplQFXRLT0eEtpYu1',
                 '1BGHobtpbg6xxG66Fl8_FfbYpUrEvUDDp'
             ]
         };
 
+        function initSwiper() {
+            if (gallerySwiper) gallerySwiper.destroy(true, true);
+
+            gallerySwiper = new Swiper(".mySwiper", {
+                effect: "coverflow",
+                grabCursor: true,
+                centeredSlides: true,
+                slidesPerView: "auto",
+                coverflowEffect: {
+                    rotate: 20,
+                    stretch: 0,
+                    depth: 200,
+                    modifier: 1,
+                    slideShadows: true,
+                },
+                pagination: {
+                    el: ".swiper-pagination",
+                    clickable: true,
+                },
+                navigation: {
+                    nextEl: ".swiper-button-next",
+                    prevEl: ".swiper-button-prev",
+                },
+                initialSlide: 1,
+                breakpoints: {
+                    640: {
+                        slidesPerView: 2,
+                    },
+                    1024: {
+                        slidesPerView: 3,
+                    }
+                }
+            });
+        }
+
         function switchTab(cat) {
-            const container = document.getElementById('gallery-container');
+            const wrapper = document.getElementById('gallery-wrapper');
             const btns = {
                 interior: document.getElementById('tab-interior'),
                 exterior: document.getElementById('tab-exterior')
             };
-
-            // Transition
-            container.style.opacity = '0';
 
             // Button Styles
             if (cat === 'interior') {
@@ -561,58 +744,21 @@
                 btns.interior.className = "px-8 py-4 md:px-10 md:py-5 rounded-2xl font-bold text-[10px] uppercase tracking-[0.2em] text-gray-400 transition-all hover:text-emerald-900";
             }
 
-            setTimeout(() => {
-                const images = galleryImages[cat];
-                const html = `
-                    <div class="gallery-grid">
-                        ${images.map(id => `
-                            <div class="gallery-item">
-                                <img src="https://lh3.googleusercontent.com/d/${id}" alt="Foto ${cat}" loading="lazy">
-                            </div>
-                        `).join('')}
-                    </div>
-                `;
-                container.innerHTML = html;
-                container.style.opacity = '1';
-            }, 300);
-        }
-
-        // --- Video Logic (Native Embed Fix) ---
-        function playVideo() {
-            const container = document.getElementById('player');
-            // Standard generic embed to ensure compatibility
-            container.innerHTML = `
-                <div class="relative w-full h-full bg-black flex flex-col items-center justify-center text-white" 
-                     style="background-image: url('https://img.youtube.com/vi/S8Rsc-Lj9Y0/maxresdefault.jpg'); background-size: cover; background-position: center;">
-                    <div class="absolute inset-0 bg-black/50"></div>
-                    <div class="relative z-10 flex flex-col items-center p-6 text-center animate__animated animate__fadeIn">
-                        <a href="https://www.youtube.com/watch?v=S8Rsc-Lj9Y0" target="_blank" class="group flex flex-col items-center gap-4 hover:opacity-90 transition-all">
-                            <div class="w-20 h-20 rounded-full border-2 border-white/80 bg-white/10 backdrop-blur-md flex items-center justify-center group-hover:scale-110 group-hover:bg-white/20 transition-all duration-300 shadow-lg">
-                                <i class="fa-solid fa-play text-3xl ml-1 text-white"></i>
-                            </div>
-                            <div class="space-y-1">
-                                <h3 class="text-2xl font-serif">Ver en YouTube</h3>
-                                <p class="text-sm font-light opacity-90">La reproducción integrada no está disponible offline</p>
-                            </div>
-                        </a>
-                    </div>
+            // Inject Images
+            const images = galleryImages[cat];
+            const html = images.map(id => `
+                <div class="swiper-slide">
+                    <img src="https://lh3.googleusercontent.com/d/${id}" alt="Foto ${cat}" loading="lazy">
                 </div>
-            `;
+            `).join('');
 
-            // UI Transitions
-            const overlay = document.getElementById('videoOverlay');
-            if (overlay) {
-                overlay.style.opacity = '0';
-                setTimeout(() => { overlay.style.display = 'none'; }, 500);
-            }
+            wrapper.innerHTML = html;
 
-            // Hide custom sound toggle
-            const soundToggle = document.getElementById('soundToggle');
-            if (soundToggle) soundToggle.style.display = 'none';
+            // Re-init Swiper
+            setTimeout(() => {
+                initSwiper();
+            }, 100);
         }
-
-        // Feature disabled for stability
-        function toggleSound() { }
 
         // --- Calculator ---
         function setYears(yr) {
